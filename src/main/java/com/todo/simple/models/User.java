@@ -7,8 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Objects;
-// TODO: import java.util.ArrayList;
-// TODO: import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -42,7 +42,8 @@ public class User {
     @Size(groups = {CreateUser.class, UpdateUser.class}, min = 8, max = 65)
     private String password;
 
-    // TODO: private List<Task> tasks = new ArrayList<Task>();
+    @OneToMany(mappedBy = "user") // one user to many tasks
+    private List<Task> tasks = new ArrayList<Task>();
 
     @Override
     public int hashCode() {
