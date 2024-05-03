@@ -1,5 +1,6 @@
 package com.todo.simple.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -69,5 +70,10 @@ public class User {
                 return false;
         return Objects.equals(this.id, other.id) && Objects.equals(this.name, other.name)
                 && Objects.equals(this.password, other.password);
+    }
+
+    @JsonIgnore
+    public List<Task> getTasks(){
+        return this.tasks;
     }
 }
