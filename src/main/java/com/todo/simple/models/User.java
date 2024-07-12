@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//@EqualsAndHashCode
+@EqualsAndHashCode
 @Entity
 @Table(name = User.TABLE_NAME)
 public class User {
@@ -31,10 +31,10 @@ public class User {
     @Column(name = "id", unique = true)
     private Long id;
 
-    @Column(name = "name", length = 100, nullable = false, unique = true)
+    @Column(name = "username", length = 100, nullable = false, unique = true)
     @NotBlank(groups = CreateUser.class)
     @Size(groups = CreateUser.class, min = 2, max = 100)
-    private String name;
+    private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", length = 65, nullable = false)
@@ -67,7 +67,7 @@ public class User {
                 return false;
             else if (!this.id.equals(other.id))
                 return false;
-        return Objects.equals(this.id, other.id) && Objects.equals(this.name, other.name)
+        return Objects.equals(this.id, other.id) && Objects.equals(this.username, other.username)
                 && Objects.equals(this.password, other.password);
     }
 

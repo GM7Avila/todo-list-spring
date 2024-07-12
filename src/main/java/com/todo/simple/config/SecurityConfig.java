@@ -2,6 +2,7 @@ package com.todo.simple.config;
 
 import java.util.Arrays;
 
+import com.todo.simple.security.JWTAuthenticationFilter;
 import com.todo.simple.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -61,8 +62,9 @@ public class SecurityConfig {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
-                .anyRequest().authenticated();
-
+                .anyRequest().authenticated().and()
+                .authenticationManager(this.authenticationManager);
+        http.addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
@@ -77,7 +79,6 @@ public class SecurityConfig {
         return source;
     }
 
-    // TODO: encoder para criptografar/descriptografar as senhas (futuramente)
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
