@@ -1,7 +1,6 @@
 package com.todo.simple.exceptions;
 
 import javax.validation.ConstraintViolationException;
-
 import com.todo.simple.services.exceptions.DataBindingViolationException;
 import com.todo.simple.services.exceptions.ObjectNotFoundException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j(topic = "GLOBAL_EXCEPTION_HANDLER")
