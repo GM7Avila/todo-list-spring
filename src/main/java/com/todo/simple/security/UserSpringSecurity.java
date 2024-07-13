@@ -3,7 +3,6 @@ package com.todo.simple.security;
 import com.todo.simple.models.enums.ProfileEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +19,7 @@ public class UserSpringSecurity implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserSpringSecurity(Long id, String name, String password, Set<ProfileEnum> profileEnums) {
+    public UserSpringSecurity(Long id, String username, String password, Set<ProfileEnum> profileEnums) {
         this.id = id;
         this.username = username;
         this.password = password;
