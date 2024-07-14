@@ -3,12 +3,17 @@ package com.todo.simple.services;
 import com.todo.simple.models.User;
 import com.todo.simple.models.enums.ProfileEnum;
 import com.todo.simple.repositories.UserRepository;
+import com.todo.simple.security.UserSpringSecurity;
+import com.todo.simple.services.exceptions.AuthorizationException;
 import com.todo.simple.services.exceptions.DataBindingViolationException;
 import com.todo.simple.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,9 +28,17 @@ public class UserService {
     private UserRepository userRepository;
 
     public User findById(Long id) {
+
+        UserSpringSecurity userSpringSecurity = authenticated();
+
+        if(!Objects.nonNull(userSpringSecurity)
+                || !userSpringSecurity.hasRole(ProfileEnum.ADMIN) && !id.equals(userSpringSecurity.getId())) {
+            throw new AuthorizationException("Access denied!");
+        }
+
         Optional<User> user = this.userRepository.findById(id);
         return user.orElseThrow(() -> new ObjectNotFoundException(
-                "Usuário não encontrado! Id: " + id + ", Tipo: " + User.class.getName()));
+                "User not found! Id: " + id + ", Type: " + User.class.getName()));
     }
 
     @Transactional
@@ -50,7 +63,16 @@ public class UserService {
         try {
             this.userRepository.deleteById(id);
         } catch (Exception e) {
-            throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas!");
+            throw new DataBindingViolationException("It's not possible to delete because there are related entities!");
+        }
+    }
+
+    // Retorna o usuario autenticado
+    public static UserSpringSecurity authenticated(){
+        try{
+            return (UserSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch(Exception e){
+            return null;
         }
     }
 
