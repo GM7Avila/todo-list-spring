@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.todo.simple.models.User;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.todo.simple.models.User;
+import com.todo.simple.models.User.CreateUser;
+import com.todo.simple.models.User.UpdateUser;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -20,14 +23,14 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
+    public ResponseEntity<User> findById(@PathVariable Long id) {
         User obj = this.userService.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
-    @Validated(User.CreateUser.class)
-    public ResponseEntity<Void> create(@Valid @RequestBody User obj){
+    @Validated(CreateUser.class)
+    public ResponseEntity<Void> create(@Valid @RequestBody User obj) {
         this.userService.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -35,6 +38,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @Validated(UpdateUser.class)
     public ResponseEntity<Void> update(@Valid @RequestBody User obj, @PathVariable Long id) {
         obj.setId(id);
         this.userService.update(obj);
