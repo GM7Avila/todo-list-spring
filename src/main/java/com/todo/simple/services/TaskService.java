@@ -3,6 +3,7 @@ package com.todo.simple.services;
 import com.todo.simple.models.Task;
 import com.todo.simple.models.User;
 import com.todo.simple.models.enums.ProfileEnum;
+import com.todo.simple.models.projection.TaskProjection;
 import com.todo.simple.repositories.TaskRepository;
 import com.todo.simple.security.UserSpringSecurity;
 import com.todo.simple.services.exceptions.AuthorizationException;
@@ -38,13 +39,13 @@ public class TaskService {
         return task;
     }
 
-    public List<Task> findAllByUser() {
+    public List<TaskProjection> findAllByUser() {
         UserSpringSecurity userSpringSecurity = UserService.authenticated();
         if(Objects.isNull(userSpringSecurity)) {
             throw new AuthorizationException("Access denied");
         }
 
-        List<Task> tasks = this.taskRepository.findByUser_Id(userSpringSecurity.getId());
+        List<TaskProjection> tasks = this.taskRepository.findByUser_Id(userSpringSecurity.getId());
         return tasks;
 
     }
