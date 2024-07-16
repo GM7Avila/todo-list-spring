@@ -14,7 +14,6 @@
 - Docker
 - BootstrapJS
 
----
 ## Initializing the Application
 
 To run the application, you need to have Docker installed on your machine.
@@ -22,7 +21,6 @@ To run the application, you need to have Docker installed on your machine.
 - Run in the terminal: `docker-compose up --build`;
 - The MySQL database runs on port `3307:3306` in Docker, while the backend environment (Spring) uses port `8080:8080`.
 
----
 ## API Endpoints
 
 ### Auth
